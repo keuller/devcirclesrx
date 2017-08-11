@@ -1,0 +1,8 @@
+html, body { background-color: #3b5999 }
+.topnav-left { padding-left: 15px !important; }
+.appbrand-spacer { display:block; padding-top:7em; }
+.button-group > button { margin-right: 5px; }
+.bill-paid { color: #CCC; text-decoration: line-through; }
+.has-text-left { text-align: left; }
+.has-text-right { text-align: right !important; }
+.is-spaceless { padding-top:0 !important; }
