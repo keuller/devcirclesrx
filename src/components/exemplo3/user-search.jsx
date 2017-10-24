@@ -11,11 +11,11 @@ const UserSearch = ({ doSearch }) => (
             <div class="field has-addons">
                 <div class="control is-expanded">
                     <input type="text" class="input" 
-                        onKeyPress={(ev) => (ev.charCode == 13 ? doSearch(userInput.value) : null)} 
+                        onKeyPress={(ev) => (ev.keyCode == 13 ? doSearch(userInput.value) : null)}
                         ref={input => userInput = input} placeholder="username" />
                 </div>
                 <div class="control">
-                    <a class="button is-info" onClick={(ev) => doSearch(userInput.value)}>Pesquisar</a>
+                    <a class="button is-info" onClick={(ev) => doSearch(userInput.value)} >Pesquisar</a>
                 </div>
             </div>
         </div>

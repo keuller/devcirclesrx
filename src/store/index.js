@@ -26,6 +26,4 @@ const initState = {
     }
 }
 
-const store$ = createStore(combineReducers({ character, billing, user }), initState)
-
-export default store$
+export default createStore(combineReducers({ character, billing, user }), initState)
