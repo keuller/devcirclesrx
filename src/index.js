@@ -2,9 +2,8 @@ import { h, render } from 'preact'
 
 import 'sass/build.sass'
 import 'index.css'
-import App from 'components/app'
-
 import store from 'store'
+import App from 'components/app'
 
 document.addEventListener('DOMContentLoaded', (ev) => {
     let root = null
