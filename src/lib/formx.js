@@ -6,6 +6,8 @@ class Formx {
     formValue: Object
     __stream$: Observable
     __dispose: Function
+    __form$  : Observable
+    dispose  : Function
 
     constructor(initValue: Object = {}) {
         this.formValue = initValue
@@ -25,15 +27,15 @@ class Formx {
         Object.keys(this.formValue).forEach(key => this.__stream$.next({ field: key, value: '' }))
     }
 
-    value() {
+    value(): Object {
         return Object.assign({}, this.formValue)
     }
 
-    field(name: string) {
+    field(name: string): string {
         return this.formValue[name]
     }
 
-    update(field: string) {
+    update(field: string): Function {
         return (input: any) => {
             if (input != undefined) {
                 this.__stream$.next({ field, value: input.target.value })
