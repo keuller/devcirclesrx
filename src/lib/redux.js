@@ -1,14 +1,16 @@
 /* @flow */
 'use strict'
 import { Observable } from 'rxjs/Observable'
+import { of } from 'rxjs/observable/of'
 import { BehaviorSubject } from 'rxjs/BehaviorSubject'
+import { mergeMap, scan } from 'rxjs/operators'
 
 type ActionType = { type: string, payload: ?Object }
 type ReducerType = (state: Object, action: ActionType) => Object
 
 let appState$ = {}
 
-const ensureStream: Function = (action) => (action instanceof Observable) ? action : Observable.of(action)
+const ensureStream: Function = (action) => (action instanceof Observable) ? action : of(action)
 const isStream: Function = (obj) => (obj instanceof Observable)
 
 export const types = (...args: string[]) => args.reduce((prev, next) => { prev[next] = next; return prev }, {})
@@ -24,7 +26,7 @@ export function dispatch(action: ActionType) {
 
 export function createStore(rootReducer: ReducerType, initialState: Object = {}): Observable {
     appState$ = new BehaviorSubject(initialState)
-    return appState$.flatMap(ensureStream).scan(rootReducer)
+    return appState$.pipe(mergeMap(ensureStream), scan(rootReducer))
 }
 
 export function combineReducers(reducers: Object): ReducerType {

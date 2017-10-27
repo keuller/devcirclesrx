@@ -6,9 +6,9 @@ let extractCSS = new ExtractTextPlugin("css/app.css")
   , extractSCSS = new ExtractTextPlugin("css/build.css")
 
 let rxjs = [
-  'rxjs/Subject', 'rxjs/Observable', 'rxjs/add/observable/of', 'rxjs/add/observable/fromPromise',
-  'rxjs/add/operator/mergeMap', 'rxjs/add/operator/map', 'rxjs/add/operator/startWith', 
-  'rxjs/add/operator/scan', 'rxjs/add/operator/catch', 'rxjs/add/operator/debounce'
+  'rxjs/BehaviorSubject', 'rxjs/Subject', 'rxjs/Observable', 'rxjs/observable/of', 'rxjs/observable/fromPromise',
+  'rxjs/operators/mergeMap', 'rxjs/operators/map', 'rxjs/operators/startWith', 
+  'rxjs/operators/scan', 'rxjs/operators/catchError'
 ]
 
 let config = {
