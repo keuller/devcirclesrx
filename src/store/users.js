@@ -2,6 +2,7 @@
 
 import { types, action } from 'lib/redux'
 import { get, createStream } from 'lib/util'
+import { mergeMap, map } from 'rxjs/operators'
 
 // action types
 const Types = types('USER_SEARCH_INFO', 'USER_SEARCH_DONE', 'USER_CLEAN_ERROR')
@@ -17,6 +18,9 @@ export default function reducer(state, action) {
         case Types.USER_CLEAN_ERROR: {
             state.error = false
             return {...state}
+        }
+        case Types.USER_SEARCH_INFO: {
+            return {...state, data:{}, repos:[] }
         }
         case Types.USER_SEARCH_DONE: {
             state.error = action.payload.error || false
@@ -46,7 +50,7 @@ const repoSelector = (repos) => {
 }
 
 // side effect functions
-export const fetchUser = (username) => get(`https://api.github.com/users/${username}`)
-    .flatMap(data => (data.error ? createStream(data) : get(data.repos_url).map(repos => ({ user: data, repos: repoSelector(repos) }))))
-    .map(user => searchDone(user))
- 
+export const fetchUser = (username) => get(`https://api.github.com/users/${username}`).pipe(
+    mergeMap(data => (data.error ? createStream(data) : get(data.repos_url).pipe(map(repos => ({ user: data, repos: repoSelector(repos) }))))),
+    map(user => searchDone(user))
+)

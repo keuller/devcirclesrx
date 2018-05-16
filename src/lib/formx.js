@@ -1,6 +1,7 @@
 // @flow
 import { Subject } from 'rxjs/Subject'
 import type { Observable } from 'rxjs/Observable'
+import { startWith, scan } from 'rxjs/operators'
 
 class Formx {
     formValue: Object
@@ -19,7 +20,7 @@ class Formx {
             return {...current, ...field}
         }
         
-        this.__form$ = this.__stream$.startWith(initValue).scan(handler)
+        this.__form$ = this.__stream$.pipe(startWith(initValue), scan(handler))
         this.dispose = this.__form$.subscribe(value => this.formValue = value)
     }
 
