@@ -15,7 +15,7 @@ let config = {
     entry:{
         bundle: path.join(__dirname, 'src/index.js'),
         runtime: ['preact', 'preact-router', 'uuid'],
-        vendor: rxjs
+        vendor: ['rxjs']
     },
 
     output: {

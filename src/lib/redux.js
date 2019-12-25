@@ -1,9 +1,7 @@
 /* @flow */
 'use strict'
-import { Observable } from 'rxjs/Observable'
-import { of } from 'rxjs/observable/of'
-import { BehaviorSubject } from 'rxjs/BehaviorSubject'
-import { mergeMap, scan } from 'rxjs/operators'
+import { Observable, BehaviorSubject, pipe, of } from 'rxjs'
+import { scan, mergeMap } from 'rxjs/operators'
 
 type ActionType = { type: string, payload: ?Object }
 type ReducerType = (state: Object, action: ActionType) => Object

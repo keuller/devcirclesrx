@@ -1,6 +1,5 @@
 // @flow
-import { Subject } from 'rxjs/Subject'
-import type { Observable } from 'rxjs/Observable'
+import { Observable, Subject } from 'rxjs'
 import { startWith, scan } from 'rxjs/operators'
 
 class Formx {

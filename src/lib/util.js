@@ -1,16 +1,15 @@
 /* @flow */
 import uuid from 'uuid/v4'
-import { Observable } from 'rxjs/Observable'
-import { of } from 'rxjs/observable/of'
-import { fromPromise } from 'rxjs/observable/fromPromise'
+import { Observable, of, from } from 'rxjs'
 import { catchError, mergeMap } from 'rxjs/operators'
+import { ajax } from 'rxjs/ajax'
 
 export const genId: Function = () => uuid().replace(/\-/g, '').substr(15).toUpperCase()
 
 export const createStream: Observable = (value) => of(value)
 
-export const get = (url: string) => fromPromise(fetch(url)).pipe(
-    mergeMap(result => (result.ok ? fromPromise(result.json()) : createStream({ error: true, cause: 'Not found.' }))),
+export const get = (url: string) => ajax(url).pipe(
+    mergeMap(result => (result.response ? of(result.response) : createStream({ error: true, cause: 'Not found.' }))),
     catchError(err => createStream({ error: true, cause: err }))
 )
 
