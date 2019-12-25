@@ -1,25 +1,20 @@
 let path = require('path')
 let webpack = require('webpack')
   , ExtractTextPlugin = require('extract-text-webpack-plugin')
+  , UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 
 let extractCSS = new ExtractTextPlugin("css/app.css")
   , extractSCSS = new ExtractTextPlugin("css/build.css")
 
-let rxjs = [
-  'rxjs/BehaviorSubject', 'rxjs/Subject', 'rxjs/Observable', 'rxjs/observable/of', 'rxjs/observable/fromPromise',
-  'rxjs/operators/mergeMap', 'rxjs/operators/map', 'rxjs/operators/startWith', 
-  'rxjs/operators/scan', 'rxjs/operators/catchError'
-]
-
 let config = {
-    entry:{
-        bundle: path.join(__dirname, 'src/index.js'),
-        runtime: ['preact', 'preact-router', 'uuid'],
-        vendor: ['rxjs']
+    mode: process.env.NODE_ENV,
+
+    entry: {
+        bundle: path.join(__dirname, 'src/index.js')
     },
 
     output: {
-        path: path.join(__dirname, 'dist'),
+        path: path.resolve(__dirname, 'dist'),
         publicPath: '/dist/',
         filename: '[name].js'
     },
@@ -42,8 +37,7 @@ let config = {
             options: {
                 name: '[name].[ext]?[hash]'
             }
-        }
-        ]
+        }]
     },
 
     resolve: {
@@ -52,41 +46,55 @@ let config = {
     },
 
     devServer: {
+        hot: true,
         historyApiFallback: true,
         port: '8000',
-        noInfo: true
+        host: 'localhost'
     },
 
     devtool: '#eval-source-map',
 
+    optimization: {
+        nodeEnv: process.env.NODE_ENV || 'development',
+        noEmitOnErrors: true,
+        splitChunks: {
+            chunks: 'async',
+            minChunks: 1,
+            automaticNameDelimiter: '-',
+            automaticNameMaxLength: 30,
+            cacheGroups: {
+                runtime: {
+                    filename: 'runtime.js',
+                    test: /[\\/]node_modules[\\/](history|preact|preact-router)[\\/]/,
+                    chunks: 'initial'
+                },
+                vendor: {
+                    filename: 'vendor.js',
+                    test: /[\\/]node_modules[\\/](rxjs|uuid)[\\/]/,
+                    chunks: 'all'
+                }
+            }
+        }
+    },
+
     plugins: [
-        new webpack.NoEmitOnErrorsPlugin(),
         extractSCSS,
-        extractCSS,
-        new webpack.optimize.CommonsChunkPlugin({
-            name: ['runtime', 'vendor'],
-            warnings: false
-        })
+        extractCSS
     ]
 }
 
 if (process.env.NODE_ENV === 'production') {
-    config.devtool = '#source-map'
-    config.plugins = (config.plugins || []).concat([
-        new webpack.DefinePlugin({
-            'process.env': {
-                NODE_ENV: '"production"'
+    config.optimization.minimizer = [
+        new UglifyJsPlugin({
+            sourceMap: true,
+            parallel: true,
+            uglifyOptions: {
+                compress: true,
+                ecma: 6,
+                mangle: true
             }
-        }),
-        new webpack.optimize.UglifyJsPlugin({
-            compress: {
-                warnings: false
-            }
-        }),
-        new webpack.LoaderOptionsPlugin({
-            minimize: true
         })
-    ])
+    ]
 }
 
 module.exports = config
