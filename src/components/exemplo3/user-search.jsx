@@ -8,12 +8,15 @@ const UserSearch = ({ doSearch }) => (
             <label>Usu&aacute;rio:</label>
         </div>
         <div class="column is-11">
-            <div class="field has-addons">
-                <div class="control is-expanded">
+            <div class="field">
+                <div class="control">
                     <input type="text" class="input" 
                         onKeyPress={(ev) => (ev.keyCode == 13 ? doSearch(userInput.value) : null)}
                         ref={input => userInput = input} placeholder="username" />
                 </div>
+            </div>
+
+            <div class="field is-grouped">
                 <div class="control">
                     <a class="button is-info" onClick={(ev) => doSearch(userInput.value)} >Pesquisar</a>
                 </div>

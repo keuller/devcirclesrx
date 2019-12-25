@@ -1,17 +1,17 @@
 import { h } from 'preact'
 import Router from 'preact-router'
-import createHistory from 'history/createHashHistory'
+import { createHashHistory } from 'history'
 import TopNav from 'components/topnav'
 import Splash from 'components/splash'
 import Exemplo1 from 'components/exemplo1'
 import Exemplo2 from 'components/exemplo2'
 import Exemplo3 from 'components/exemplo3'
 
-const App = ({ character, user, billing }) => (
+const App = ({ character, billing, user }) => (
     <main>
         <TopNav />
         <div class="hero">
-            <Router history={createHistory()}>
+            <Router history={createHashHistory()}>
                 <Splash path="/" />
                 <Exemplo1 path="/exemplo1" person={character.selected} />
                 <Exemplo2 path="/exemplo2" billing={billing} />
