@@ -55,7 +55,7 @@
     "file-loader": "^5.0.2",
     "flow-bin": "^0.72.0",
     "http-server": "^0.12.0",
-    "node-sass": "^4.13.0",
+    "node-sass": "^7.0.0",
     "sass-loader": "^8.0.0",
     "style-loader": "^1.1.1",
     "uglifyjs-webpack-plugin": "^2.2.0",
